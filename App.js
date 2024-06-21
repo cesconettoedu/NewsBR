@@ -31,6 +31,7 @@ export default function App() {
 function HomeTabs() {
   return(
     <Tab.Navigator
+      initialRouteName="home"
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
@@ -42,7 +43,7 @@ function HomeTabs() {
           elevation: 0,
           height: "8%",
           backgroundColor: '#fff',
-          paddingTop: Platform.OS == "ios" ? 20 : 0,
+          paddingTop: Platform.OS == "ios" ? 20 : 5,
         }
       }}
     >
@@ -70,7 +71,7 @@ function HomeTabs() {
                 backgroundColor: "#16247d",
                 width: Platform.OS == "ios" ? 70 : 70,
                 height: Platform.OS == "ios" ? 70 : 70,
-                top: Platform.OS == "ios" ? -10 : -10,
+                top: Platform.OS == "ios" ? -10 : -15,
                 borderRadius: Platform.OS == "ios" ? 25 : 25,
               }}
             >

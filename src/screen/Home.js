@@ -72,14 +72,21 @@ const Home = () => {
     getTodayDate();
     getTodayEvents();
     getUpCommingEvents();
-    setTimeout(() => {
+    if(upCommingEvents != undefined && todayEvents != undefined) {
+      setTimeout(() => {
       setLoad(false)
-    }, 1000);
+    }, 1000);  
+    } else {
+      setTimeout(() => {
+        setLoad(false)
+      }, 2500);
+    }
   },[])
 
   return (
     <LinearGradient
-      colors={['rgba(58,131,244,0.4)', 'rgba(9, 181, 211, 0.4)']}
+      // colors={['rgba(58,131,244,0.4)', 'rgba(9, 181, 211, 0.4)']}
+      colors={['rgba(253, 252, 160,1)', 'rgba(144, 238, 144, 1)']}
       style={tw`w-full flex-1`}
     >
       <SafeAreaView
@@ -145,7 +152,7 @@ const Home = () => {
             <Text style={tw`ml-4 text-3xl font-bold`}>Today's Event</Text>
             <View style={tw`pl-4`}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                { todayEvents.length > 0 ? 
+                { todayEvents != undefined && todayEvents.length > 0 ? 
                   (
                     todayEvents.map((even, id) =>{   
                       return (
@@ -169,11 +176,11 @@ const Home = () => {
               >
                 {
                   upCommingEvents.map((even, id) =>{
-                    let bg= even.id==selectedEvent? 'rgba(255,255,255,0.4)' : 'transparent';
+                    let bg= even.id==selectedEvent? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)';
                     if (even.date > today) {
                     return (
                       <TouchableOpacity 
-                        style={StyleSheet.compose({ backgroundColor: bg }, tw`mx-4 p-2 mb-2 flex-row mt-2 rounded-2xl`)}
+                        style={StyleSheet.compose({ backgroundColor: bg }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
                         onPress={() => {setSelectedEvent(even.id)}}
                         key={id}
                       >
