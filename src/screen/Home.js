@@ -15,26 +15,47 @@ import Spinner from '../../assets/gif/Spinner.gif';
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
+  const [load, setLoad] = useState(true);
   const [activeStore, setActiveStore] = useState('Action');
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [allEvents, setallEvents] = useState();
-  const [load, setLoad] = useState(true);
-  
+  const [upCommingEvents, setUpCommingEvents] = useState();
+  const [todayEvents, setTodayEvents] = useState();
 
-  const getAllEvents = async () => {
+
+  // const getAllEvents = async () => {
+  //   let { data: NewsBR, error } = await supabase
+  //   .from('NewsBR')
+  //   .select('*')
+  //   .order('date')  
+  //     setallEvents(NewsBR)
+  //     return NewsBR
+  // }
+
+  const getUpCommingEvents = async () => {
     let { data: NewsBR, error } = await supabase
-  .from('NewsBR')
-  .select('*')
-  .order('date')  
-    setallEvents(NewsBR)
-    return NewsBR
+    .from('NewsBR')
+    .select('*')
+    .gte('date', `${today}`)
+    .order('date')  
+      setUpCommingEvents(NewsBR)
+      return NewsBR
+  }
+
+  const getTodayEvents = async () => {
+    let { data: NewsBR, error } = await supabase
+    .from('NewsBR')
+    .select('*')
+    .eq('date', `${today}`)  
+      setTodayEvents(NewsBR)
+      return NewsBR
   }
 
 
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
-      getAllEvents();
+      getTodayEvents();
+      getUpCommingEvents();
       setRefreshing(false);
     }, 1000);
   };
@@ -46,12 +67,12 @@ const Home = () => {
   }
 
   const today = getTodayDate();
-  console.log(today);
 
 
   useEffect(() => {
     getTodayDate();
-    getAllEvents();
+    getTodayEvents();
+    getUpCommingEvents();
     setTimeout(() => {
       setLoad(false)
     }, 1000);
@@ -126,19 +147,12 @@ const Home = () => {
             <View style={tw`pl-4`}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {
-                  allEvents.map((even, id) =>{
-                   // console.log(even.date);
+                  todayEvents.map((even, id) =>{
                     if (even.date == today) {      
                       return (
                         <EventCard key={id} even={even}/>
                       )
-                    } 
-                    // else  {
-                    //   return (
-                    //     <EventCard key={id} even={even}/>
-                    //   )
-                    // }
-                
+                    }                
                   })
                 }
               </ScrollView>
@@ -146,14 +160,14 @@ const Home = () => {
           </View>
 
           {/* Upcoming events  */}
-          <View style={tw`mt-6`}>
+          <View style={tw`mt-6 `}>
             <Text style={tw`ml-4 text-lg font-bold`}>Upcoming Event</Text>
             <View style={tw`pl-1` }>
               <ScrollView 
                 style={{height: 320}} showsVerticalScrollIndicator={false}
               >
                 {
-                  allEvents.map((even, id) =>{
+                  upCommingEvents.map((even, id) =>{
                     let bg= even.id==selectedEvent? 'rgba(255,255,255,0.4)' : 'transparent';
                     if (even.date > today) {
                     return (

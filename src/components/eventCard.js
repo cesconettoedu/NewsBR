@@ -6,6 +6,8 @@ import S from '../stylesGlobal/S';
 
 export default function eventCard(props) {
 
+
+  
   return (
     <TouchableOpacity 
       //onPress={} vai para a pagina do evento com mais detalhes
