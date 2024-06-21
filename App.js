@@ -1,38 +1,78 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, View, Text } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from "./src/screen/Home";
+import Favorite from "./src/screen/Favorite";
+
+import { Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <SafeAreaView style={styles.root}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="Home" >
 
-          <Stack.Screen 
-            name="Home" 
-            component={Home}
-          />
-        
-          {/* <Stack.Screen 
-            name="PhotoList" 
-            component={PhotoList} 
-          />
-
-          <Stack.Screen 
-            name="Question" 
-            component={Question} 
-          /> */}
+          <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
 
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
   );
 }
+
+function HomeTabs() {
+  return(
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          left: 0,
+          elevation: 0,
+          height: 60,
+          backgroundColor: '#fff'
+        }
+      }}
+    >
+      <Tab.Screen name="home" component={Home} 
+        options={{
+          tabBarIcon: ({focused}) => {
+            return(
+            <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+              <Entypo name="home" size={24} color={focused ? "green" : "gray"} />
+              <Text style={{fontSize: 12, color: "#16247d"}} >HOME</Text>
+            </View>
+            )
+          }
+        }}
+      />
+      <Tab.Screen name="favorite" component={Favorite} 
+        options={{
+          tabBarIcon: ({focused}) => {
+            return(
+            <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+              <MaterialIcons name="favorite" size={24} color={focused ? "green" : "gray"} />
+              <Text style={{fontSize: 12, color: "#16247d"}} >FAVORITE</Text>
+            </View>
+            )
+          }
+        }}
+      />
+    </Tab.Navigator>
+  )
+}
+
 
 const styles = StyleSheet.create({
   root: {
