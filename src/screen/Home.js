@@ -48,6 +48,7 @@ const Home = () => {
   const today = getTodayDate();
   console.log(today);
 
+
   useEffect(() => {
     getTodayDate();
     getAllEvents();
@@ -127,11 +128,17 @@ const Home = () => {
                 {
                   allEvents.map((even, id) =>{
                    // console.log(even.date);
-                   if (even.date == today) {      
-                     return (
-                       <EventCard key={id} even={even}/>
-                     )
-                    }
+                    if (even.date == today) {      
+                      return (
+                        <EventCard key={id} even={even}/>
+                      )
+                    } 
+                    // else  {
+                    //   return (
+                    //     <EventCard key={id} even={even}/>
+                    //   )
+                    // }
+                
                   })
                 }
               </ScrollView>
@@ -148,6 +155,7 @@ const Home = () => {
                 {
                   allEvents.map((even, id) =>{
                     let bg= even.id==selectedEvent? 'rgba(255,255,255,0.4)' : 'transparent';
+                    if (even.date > today) {
                     return (
                       <TouchableOpacity 
                         style={StyleSheet.compose({ backgroundColor: bg }, tw`mx-4 p-2 mb-2 flex-row mt-2 rounded-2xl`)}
@@ -168,6 +176,7 @@ const Home = () => {
                         
                       </TouchableOpacity>
                     )
+                    }
                   })
                 }
               </ScrollView>
