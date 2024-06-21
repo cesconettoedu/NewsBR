@@ -40,8 +40,9 @@ function HomeTabs() {
           right: 0,
           left: 0,
           elevation: 0,
-          height: 60,
-          backgroundColor: '#fff'
+          height: "8%",
+          backgroundColor: '#fff',
+          paddingTop: Platform.OS == "ios" ? 20 : 0,
         }
       }}
     >
@@ -67,10 +68,10 @@ function HomeTabs() {
                 alignItems: 'center', 
                 justifyContent: 'center',
                 backgroundColor: "#16247d",
-                width: Platform.OS == "ios" ? 50 : 60,
-                height: Platform.OS == "ios" ? 50 : 60,
+                width: Platform.OS == "ios" ? 70 : 70,
+                height: Platform.OS == "ios" ? 70 : 70,
                 top: Platform.OS == "ios" ? -10 : -10,
-                borderRadius: Platform.OS == "ios" ? 25 : 30,
+                borderRadius: Platform.OS == "ios" ? 25 : 25,
               }}
             >
               <Entypo name="home" size={24} color={focused ? "green" : "gray"} />

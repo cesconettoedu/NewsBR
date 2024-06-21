@@ -161,7 +161,7 @@ const Home = () => {
           </View>
 
           {/* Upcoming events  */}
-          <View style={tw`mt-6 mb-2`}>
+          <View style={tw`mt-6 mb-15`}>
             <Text style={tw`ml-4 text-lg font-bold`}>Upcoming Event</Text>
             <View style={tw`pl-1` }>
               <ScrollView 
