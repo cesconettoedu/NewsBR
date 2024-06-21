@@ -5,7 +5,6 @@ import tw from 'twrnc';
 import S from '../stylesGlobal/S';
 
 export default function eventCard(props) {
-  console.log(props);
 
   return (
     <TouchableOpacity 

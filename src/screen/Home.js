@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import S from '../stylesGlobal/S'
@@ -8,13 +8,13 @@ import { supabase } from "../../supabase/supabase";
 
 import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
-import {storesData, eventsData} from '../database/index';
+import {storesData} from '../database/index';
 import Spinner from '../../assets/gif/Spinner.gif';
 
 
 
 const Home = () => {
-
+  const [refreshing, setRefreshing] = React.useState(false);
   const [activeStore, setActiveStore] = useState('Action');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [allEvents, setallEvents] = useState();
@@ -31,7 +31,25 @@ const Home = () => {
   }
 
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      getAllEvents();
+      setRefreshing(false);
+    }, 1000);
+  };
+
+
+  function getTodayDate() {
+    const today = new Date();
+    return `${today.getFullYear()}-${('0' + (today.getMonth() + 1)).slice(-2)}-${('0' + today.getDate()).slice(-2)}`;
+  }
+
+  const today = getTodayDate();
+  console.log(today);
+
   useEffect(() => {
+    getTodayDate();
     getAllEvents();
     setTimeout(() => {
       setLoad(false)
@@ -56,6 +74,17 @@ const Home = () => {
       }
       {!load &&  
       <>
+        <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={{flexGrow: 1}}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
+        >
+
           <View >
             <Text style={tw`text-center mt-3 text-2xl font-light text-black`}>Home</Text>
           </View>
@@ -97,9 +126,12 @@ const Home = () => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {
                   allEvents.map((even, id) =>{
-                    return (
-                      <EventCard key={id} even={even}/>
-                    )
+                   // console.log(even.date);
+                   if (even.date == today) {      
+                     return (
+                       <EventCard key={id} even={even}/>
+                     )
+                    }
                   })
                 }
               </ScrollView>
@@ -141,6 +173,8 @@ const Home = () => {
               </ScrollView>
             </View>
           </View>
+          </ScrollView>
+
         </> 
       } 
       </SafeAreaView>
