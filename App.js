@@ -9,6 +9,7 @@ import Favorite from "./src/screen/Favorite";
 import Stores from "./src/screen/Stores";
 
 import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
+import { LinearGradient } from "expo-linear-gradient";
 
 
 const Stack = createNativeStackNavigator();
@@ -68,14 +69,14 @@ function HomeTabs() {
               style={{ 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                backgroundColor: "#16247d",
+                backgroundColor: "rgba(9,181,211,1)",
                 width: Platform.OS == "ios" ? 70 : 70,
                 height: Platform.OS == "ios" ? 70 : 70,
                 top: Platform.OS == "ios" ? -10 : -15,
                 borderRadius: Platform.OS == "ios" ? 25 : 25,
               }}
             >
-              <Entypo name="home" size={24} color={focused ? "green" : "gray"} />
+              <Entypo name="home" size={24} color={focused ? "blue" : "gray"} />
               <Text style={{fontSize: 12, color: "#fff"}} >HOME</Text>
             </View>
             )
@@ -88,7 +89,7 @@ function HomeTabs() {
           tabBarIcon: ({focused}) => {
             return(
             <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-              <MaterialIcons name="favorite" size={24} color={focused ? "green" : "gray"} />
+              <MaterialIcons name="favorite" size={24} color={focused ? "red" : "gray"} />
               <Text style={{fontSize: 12, color: "#16247d"}} >FAVORITE</Text>
             </View>
             )

@@ -192,7 +192,7 @@ const Home = () => {
                           <Text style={tw`font-semibold pb-3`}>{even.title}</Text>
                           <Text style={tw`font-semibold`}>{even.date}</Text>
                         </View>
-                        <View style={tw`flex justify-center items-center`}>
+                        <View style={tw`flex justify-center items-center mr-3`}>
                           <GradientBtn buttonClass="py-2 px-5"/>
                         </View>
                         
