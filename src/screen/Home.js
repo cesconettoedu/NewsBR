@@ -10,8 +10,6 @@ import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
 import {storesData} from '../database/index';
 import Spinner from '../../assets/gif/Spinner.gif';
-import NoEventImg from '../../assets/noEventToday.png'; 
-
 
 
 const Home = () => {
@@ -147,28 +145,27 @@ const Home = () => {
             <Text style={tw`ml-4 text-3xl font-bold`}>Today's Event</Text>
             <View style={tw`pl-4`}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                { todayEvents.length > 0 ? (
-                  
-                  todayEvents.map((even, id) =>{   
+                { todayEvents.length > 0 ? 
+                  (
+                    todayEvents.map((even, id) =>{   
                       return (
                         <EventCard key={id} even={even}/>
                       )
-                  })
-                ) : (
-                  <EventCard even={{image: 'https://news.sosevents.org/wp-content/uploads/2019/05/img_0038.png', title: 'No Event Today'}}/>
-                )
-                  
+                    })
+                  ) : (
+                    <EventCard even={{image: 'https://news.sosevents.org/wp-content/uploads/2019/05/img_0038.png', title: 'No Event Today'}}/>
+                  ) 
                 }
               </ScrollView>
             </View>
           </View>
 
           {/* Upcoming events  */}
-          <View style={tw`mt-6 `}>
+          <View style={tw`mt-6 mb-2`}>
             <Text style={tw`ml-4 text-lg font-bold`}>Upcoming Event</Text>
             <View style={tw`pl-1` }>
               <ScrollView 
-                style={{height: 320}} showsVerticalScrollIndicator={false}
+                 showsVerticalScrollIndicator={false}
               >
                 {
                   upCommingEvents.map((even, id) =>{
