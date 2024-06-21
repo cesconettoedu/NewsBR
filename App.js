@@ -6,9 +6,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from "./src/screen/Home";
 import Favorite from "./src/screen/Favorite";
+import Stores from "./src/screen/Stores";
 
-import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
 
 
 const Stack = createNativeStackNavigator();
@@ -45,18 +45,42 @@ function HomeTabs() {
         }
       }}
     >
-      <Tab.Screen name="home" component={Home} 
+      <Tab.Screen name="store" component={Stores} 
         options={{
           tabBarIcon: ({focused}) => {
             return(
             <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-              <Entypo name="home" size={24} color={focused ? "green" : "gray"} />
-              <Text style={{fontSize: 12, color: "#16247d"}} >HOME</Text>
+              <Fontisto name="shopping-store" size={20} color={focused ? "green" : "gray"} />
+              <Text style={{fontSize: 12, color: "#16247d"}} >STORES</Text>
             </View>
             )
           }
         }}
       />
+
+      <Tab.Screen name="home" component={Home} 
+        options={{
+          tabBarIcon: ({focused}) => {
+            return(
+            <View 
+              style={{ 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                backgroundColor: "#16247d",
+                width: Platform.OS == "ios" ? 50 : 60,
+                height: Platform.OS == "ios" ? 50 : 60,
+                top: Platform.OS == "ios" ? -10 : -10,
+                borderRadius: Platform.OS == "ios" ? 25 : 30,
+              }}
+            >
+              <Entypo name="home" size={24} color={focused ? "green" : "gray"} />
+              <Text style={{fontSize: 12, color: "#fff"}} >HOME</Text>
+            </View>
+            )
+          }
+        }}
+      />
+      
       <Tab.Screen name="favorite" component={Favorite} 
         options={{
           tabBarIcon: ({focused}) => {
