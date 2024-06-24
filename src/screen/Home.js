@@ -184,7 +184,7 @@ const Home = () => {
                   upCommingEvents.map((even, id) =>{
                     if (even.date > today) {
                     return (
-                      <EventSmallCard info={even}/>
+                      <EventSmallCard key={id} info={even}/>
                       // <TouchableOpacity 
                       //   style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
                       //   onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
