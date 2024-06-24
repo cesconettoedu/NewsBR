@@ -37,22 +37,22 @@ const Home = () => {
   // }
 
   const getUpCommingEvents = async () => {
-    let { data: NewsBR, error } = await supabase
-    .from('NewsBR')
+    let { data: BrNewsLd, error } = await supabase
+    .from('BrNewsLd')
     .select('*')
     .gte('date', `${today}`)
     .order('date')  
-      setUpCommingEvents(NewsBR)
-      return NewsBR
+      setUpCommingEvents(BrNewsLd)
+      return BrNewsLd
   }
 
   const getTodayEvents = async () => {
-    let { data: NewsBR, error } = await supabase
-    .from('NewsBR')
+    let { data: BrNewsLd, error } = await supabase
+    .from('BrNewsLd')
     .select('*')
     .eq('date', `${today}`)  
-      setTodayEvents(NewsBR)
-      return NewsBR
+      setTodayEvents(BrNewsLd)
+      return BrNewsLd
   }
 
 
