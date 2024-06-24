@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
+import EventSmallCard from '../components/eventSmallCard';
+
 import {storesData} from '../database/index';
 import Spinner from '../../assets/gif/Spinner.gif';
 //import { HeartIcon } from 'react-native-heroicons/solid'
@@ -182,30 +184,34 @@ const Home = () => {
                   upCommingEvents.map((even, id) =>{
                     if (even.date > today) {
                     return (
-                      <TouchableOpacity 
-                        style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
-                        onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
-                        key={id}
-                      >
-                        <Image
-                          src={even.image}
-                          style={S.icons}
-                        />
-                        <View style={tw`flex-1 flex justify-center pl-3`}>
-                          <Text style={tw`font-semibold pb-3`}>{even.title}</Text>
-                          <Text style={tw`font-semibold`}>{even.date}</Text>
-                        </View>
-                        <View style={tw`flex justify-center items-center mr-3`}>
-                          <TouchableOpacity
-                            style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' },tw`p-2 rounded-full `)}
-                          >
-                            <FontAwesome name="heart" size={20} color="red" />
-                           {/* <FontAwesome name="heart-o" size={24} color="gray" /> */}
-                          </TouchableOpacity>
-                          <GradientBtn buttonClass="py-2 px-5"/>
-                        </View>
+                      <EventSmallCard info={even}/>
+                      // <TouchableOpacity 
+                      //   style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
+                      //   onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
+                      //   key={id}
+                      // >
+                      //   <Image
+                      //     src={even.image}
+                      //     style={S.icons}
+                      //   />
+                      //   <View style={tw`flex-1 flex justify-center pl-3`}>
+                      //     <Text style={tw`font-semibold pb-3`}>{even.title}</Text>
+                      //     <Text style={tw`font-semibold`}>{even.date}</Text>
+                      //   </View>
+                      //   <View style={tw`flex justify-between items-center mr-3`}>
+                      //     <TouchableOpacity
+                      //       style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' },tw`p-2 rounded-full `)}
+                      //     >
+
+                      //       {/* mudar quando receber a props do event 
+                      //       <FontAwesome name="heart" size={20} color={favourite ? 'red' : 'gray'} />
+                            
+                      //       */}
+                      //     </TouchableOpacity>
+                      //     <GradientBtn buttonClass="py-2 px-5"/>
+                      //   </View>
                         
-                      </TouchableOpacity>
+                      // </TouchableOpacity>
                     )
                     }
                   })
