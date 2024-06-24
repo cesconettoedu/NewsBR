@@ -3,15 +3,17 @@ import { View, Text, TouchableOpacity, Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'twrnc';
 import S from '../stylesGlobal/S';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function eventCard(props) {
 
+  const navigation = useNavigation();
 
   
   return (
     <TouchableOpacity 
-      //onPress={} vai para a pagina do evento com mais detalhes
-      style={tw`mr-4 mt-3 relative `}>
+      onPress={() => {navigation.navigate('Event', {...props.even})}} style={tw`mr-4 mt-3`}>
       <Image
         src={props.even.image}
         style={tw`w-70 h-50 rounded-3xl`}

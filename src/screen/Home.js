@@ -180,11 +180,10 @@ const Home = () => {
               >
                 {
                   upCommingEvents.map((even, id) =>{
-                    let bg= even.id==selectedEvent? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.3)';
                     if (even.date > today) {
                     return (
                       <TouchableOpacity 
-                        style={StyleSheet.compose({ backgroundColor: bg }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
+                        style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
                         onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
                         key={id}
                       >

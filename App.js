@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import tw from 'twrnc';
 
 import Home from "./src/screen/Home";
 import Favorite from "./src/screen/Favorite";
@@ -67,20 +68,15 @@ function HomeTabs() {
         options={{
           tabBarIcon: ({focused}) => {
             return(
-            <View 
-              style={{ 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                backgroundColor: "rgba(9,181,211,1)",
-                width: Platform.OS == "ios" ? 70 : 70,
-                height: Platform.OS == "ios" ? 70 : 70,
-                top: Platform.OS == "ios" ? -10 : -15,
-                borderRadius: Platform.OS == "ios" ? 25 : 25,
-              }}
+            <LinearGradient
+              colors={['rgba(9,181,211,0.9)', 'rgba(55,131,244,0.9)']}
+              end={{x:1, y:1}}
+              start={{x:0.1, y:0.2}}
+              style={StyleSheet.compose(styles.btnHome, tw`rounded-3xl `)}
             >
               <Entypo name="home" size={24} color={focused ? "blue" : "gray"} />
               <Text style={{fontSize: 12, color: "#fff"}} >HOME</Text>
-            </View>
+            </LinearGradient>
             )
           }
         }}
@@ -108,5 +104,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === 'android' ? 5 : 5
   },
+  btnHome:{
+    alignItems: 'center', 
+    justifyContent: 'center',
+    width: Platform.OS == "ios" ? 70 : 70,
+    height: Platform.OS == "ios" ? 70 : 70,
+    top: Platform.OS == "ios" ? -10 : -15,
+    borderRadius: Platform.OS == "ios" ? 25 : 25,             
+  }
  
 });
