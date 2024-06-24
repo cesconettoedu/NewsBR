@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from "./src/screen/Home";
 import Favorite from "./src/screen/Favorite";
 import Stores from "./src/screen/Stores";
+import Event from "./src/screen/Event";
 
 import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,6 +23,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Home" >
 
           <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
+          <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
 
         </Stack.Navigator>
       </NavigationContainer>

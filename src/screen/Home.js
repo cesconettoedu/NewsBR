@@ -5,11 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import S from '../stylesGlobal/S'
 import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
+import { useNavigation } from '@react-navigation/native';
 
 import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
 import {storesData} from '../database/index';
 import Spinner from '../../assets/gif/Spinner.gif';
+//import { HeartIcon } from 'react-native-heroicons/solid'
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const Home = () => {
@@ -20,6 +23,7 @@ const Home = () => {
   const [upCommingEvents, setUpCommingEvents] = useState();
   const [todayEvents, setTodayEvents] = useState();
 
+  const navigation = useNavigation();
 
   // const getAllEvents = async () => {
   //   let { data: NewsBR, error } = await supabase
@@ -181,7 +185,7 @@ const Home = () => {
                     return (
                       <TouchableOpacity 
                         style={StyleSheet.compose({ backgroundColor: bg }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
-                        onPress={() => {setSelectedEvent(even.id)}}
+                        onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
                         key={id}
                       >
                         <Image
@@ -193,6 +197,12 @@ const Home = () => {
                           <Text style={tw`font-semibold`}>{even.date}</Text>
                         </View>
                         <View style={tw`flex justify-center items-center mr-3`}>
+                          <TouchableOpacity
+                            style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' },tw`p-2 rounded-full `)}
+                          >
+                            <FontAwesome name="heart" size={20} color="red" />
+                           {/* <FontAwesome name="heart-o" size={24} color="gray" /> */}
+                          </TouchableOpacity>
                           <GradientBtn buttonClass="py-2 px-5"/>
                         </View>
                         
@@ -215,3 +225,4 @@ const Home = () => {
 }
 
 export default Home
+

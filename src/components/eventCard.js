@@ -21,7 +21,7 @@ export default function eventCard(props) {
           style={tw`absolute p-4 h-full w-full flex justify-end rounded-3xl`}
         >
           <View style={tw`bg-cyan-800 bg-opacity-80 rounded`}>
-            <Text style={S.textTitle}>{props.even.title}</Text>
+            <Text style={S.textTitle}> {props.even.title}</Text>
           </View>
         </LinearGradient>
     </TouchableOpacity>
