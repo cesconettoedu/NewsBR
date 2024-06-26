@@ -1,23 +1,25 @@
-import { StyleSheet, Platform, View, Text } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Platform, View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import tw from 'twrnc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
+import { LinearGradient } from "expo-linear-gradient";
 
 import Home from "./src/screen/Home";
 import Favorite from "./src/screen/Favorite";
 import Stores from "./src/screen/Stores";
 import Event from "./src/screen/Event";
-
-import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
-import { LinearGradient } from "expo-linear-gradient";
-
+import Login from "./src/screen/Login"
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  
   return (
     <SafeAreaView style={styles.root}>
       <NavigationContainer>
@@ -25,6 +27,7 @@ export default function App() {
 
           <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
           <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
+          <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
 
         </Stack.Navigator>
       </NavigationContainer>
@@ -33,6 +36,32 @@ export default function App() {
 }
 
 function HomeTabs() {
+
+  const [conditionMet, setConditionMet] = useState(false);
+  const navigation = useNavigation();
+
+
+  //to get the async storage login data in Login.js and keep loged
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('my-key');
+      if (value !== null) {
+        setConditionMet(true)
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+
+  useEffect(() => {
+    getData();
+    // Simulação de uma condição assíncrona (por exemplo, verificação de login)
+    // setTimeout(() => {
+    //   setConditionMet(false); // Condição definida como verdadeira após um tempo simulado
+    // }, 2000); // Tempo simulado de 2 segundos
+  }, []);
+
   return(
     <Tab.Navigator
       initialRouteName="home"
@@ -91,7 +120,22 @@ function HomeTabs() {
               <Text style={{fontSize: 12, color: "#16247d"}} >FAVORITE</Text>
             </View>
             )
-          }
+          },
+          tabBarButton: (props) => (
+              <TouchableOpacity
+                {...props}
+                onPress={() => {
+                  getData ();
+                  if (conditionMet) {
+                    props.onPress(); // runs the navigation if condition is met
+                  } else {
+                    // if condition is NOT met
+                    console.log('Condição não atendida para abrir ScreenB');
+                    navigation.navigate('Login')
+                  }
+                }}
+              />
+            ),
         }}
       />
     </Tab.Navigator>

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'twrnc';
-import S from '../stylesGlobal/S';
+import S from '../globalStyles/S';
 import { useNavigation } from '@react-navigation/native';
 
 

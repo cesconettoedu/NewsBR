@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import S from '../stylesGlobal/S'
 import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
-import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { clearAll, getData } from '../globalFunc/asyStorage';
 
 import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
@@ -13,20 +15,18 @@ import EventSmallCard from '../components/eventSmallCard';
 
 import {storesData} from '../database/index';
 import Spinner from '../../assets/gif/Spinner.gif';
-//import { HeartIcon } from 'react-native-heroicons/solid'
-import { FontAwesome } from '@expo/vector-icons';
 
 
 const Home = () => {
+  const navigation = useNavigation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [load, setLoad] = useState(true);
   const [activeStore, setActiveStore] = useState('Action');
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const [upCommingEvents, setUpCommingEvents] = useState();
   const [todayEvents, setTodayEvents] = useState();
+  const [conditionMet, setConditionMet] = useState(false);
 
-  const navigation = useNavigation();
-
+  
   // const getAllEvents = async () => {
   //   let { data: NewsBR, error } = await supabase
   //   .from('NewsBR')
@@ -56,6 +56,7 @@ const Home = () => {
   }
 
 
+  // serve para na hora que arrasta o dedo para baixo, fazer um refresh na pagina
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -74,20 +75,41 @@ const Home = () => {
   const today = getTodayDate();
 
 
-  useEffect(() => {
-    getTodayDate();
-    getTodayEvents();
-    getUpCommingEvents();
-    if(upCommingEvents != undefined && todayEvents != undefined) {
-      setTimeout(() => {
-      setLoad(false)
-    }, 1000);  
-    } else {
-      setTimeout(() => {
-        setLoad(false)
-      }, 2500);
+  //fiz tudo dentro dessa funcao para poder usar no useFocus tb
+  const loadData = useCallback(async () => {
+    try {
+      getTodayDate();
+      getTodayEvents();
+      getUpCommingEvents();
+      if(upCommingEvents != undefined && todayEvents != undefined) {
+        setTimeout(() => {
+          setLoad(false)
+        }, 1000);  
+      } else {
+        setTimeout(() => {
+          setLoad(false)
+        }, 2500);
+      };
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
     }
-  },[])
+  }, []);
+
+
+  useEffect(() => {
+    loadData();
+  }, [conditionMet]);
+
+
+  // useFocusEffect para recarregar os dados toda vez que a tela estiver em foco
+  // talvez usar para ver se ta logado
+  useFocusEffect(
+    useCallback(() => {
+      console.log('fez reload');
+      getData();
+    }, [])
+  );
+
 
   return (
     <LinearGradient
@@ -119,8 +141,19 @@ const Home = () => {
             }
         >
 
-          <View >
-            <Text style={tw`text-center mt-3 text-2xl font-light text-black`}>Home</Text>
+          <View style={tw`flex-row-reverse mt-4 mx-6`} >
+            <TouchableOpacity 
+                onPress={() => {clearAll(); setConditionMet(false) }}
+              >
+                <MaterialIcons name="logout" size={34} color="black"/> 
+              </TouchableOpacity>
+            
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Entypo name="emoji-sad" size={34} color="black" /> 
+            </TouchableOpacity>
+            
           </View>
           
           {/*   STORES */}
@@ -183,36 +216,9 @@ const Home = () => {
                 {
                   upCommingEvents.map((even, id) =>{
                     if (even.date > today) {
-                    return (
-                      <EventSmallCard key={id} info={even}/>
-                      // <TouchableOpacity 
-                      //   style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' }, tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
-                      //   onPress={() => {setSelectedEvent(even.id); navigation.navigate('Event', {...even})}}
-                      //   key={id}
-                      // >
-                      //   <Image
-                      //     src={even.image}
-                      //     style={S.icons}
-                      //   />
-                      //   <View style={tw`flex-1 flex justify-center pl-3`}>
-                      //     <Text style={tw`font-semibold pb-3`}>{even.title}</Text>
-                      //     <Text style={tw`font-semibold`}>{even.date}</Text>
-                      //   </View>
-                      //   <View style={tw`flex justify-between items-center mr-3`}>
-                      //     <TouchableOpacity
-                      //       style={StyleSheet.compose({ backgroundColor: 'rgba(255,255,255,0.3)' },tw`p-2 rounded-full `)}
-                      //     >
-
-                      //       {/* mudar quando receber a props do event 
-                      //       <FontAwesome name="heart" size={20} color={favourite ? 'red' : 'gray'} />
-                            
-                      //       */}
-                      //     </TouchableOpacity>
-                      //     <GradientBtn buttonClass="py-2 px-5"/>
-                      //   </View>
-                        
-                      // </TouchableOpacity>
-                    )
+                      return (
+                        <EventSmallCard key={id} info={even}/>
+                      )
                     }
                   })
                 }
@@ -220,12 +226,10 @@ const Home = () => {
             </View>
           </View>
           </ScrollView>
-
         </> 
       } 
       </SafeAreaView>
     </LinearGradient>
-
   )
 }
 

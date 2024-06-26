@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import S from '../stylesGlobal/S'
+import S from '../globalStyles/S'
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import GradientBtn from '../components/gradientBtn';
