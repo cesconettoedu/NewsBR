@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { View, Text, ScrollView, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
-import { MaterialIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { clearAll, getData } from '../globalFunc/asyStorage';
+
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+
+import { GlobalStateContext } from '../globalState/hasUser'
 
 import GradientBtn from '../components/gradientBtn';
 import EventCard from '../components/eventCard';
@@ -26,7 +29,12 @@ const Home = () => {
   const [todayEvents, setTodayEvents] = useState();
   const [conditionMet, setConditionMet] = useState(false);
 
-  
+  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
+
+  const handleClick = () => {
+    updateGlobalVariable(!userLoged);
+  };
+
   // const getAllEvents = async () => {
   //   let { data: NewsBR, error } = await supabase
   //   .from('NewsBR')
@@ -142,17 +150,35 @@ const Home = () => {
         >
 
           <View style={tw`flex-row-reverse mt-4 mx-6`} >
+            {userLoged ? (
+                <TouchableOpacity 
+                  //onPress={() => {clearAll(); setConditionMet(false) }}
+                  onPress={() => {updateGlobalVariable(false); }}
+                  
+                >
+                  <MaterialIcons name="logout" size={34} color="black"/> 
+                </TouchableOpacity>
+             ) : (
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('Login')}
+                >
+                  <Entypo name="emoji-sad" size={34} color="black" /> 
+                </TouchableOpacity>
+             )
+}
+
+
+            {/* // TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
             <TouchableOpacity 
-                onPress={() => {clearAll(); setConditionMet(false) }}
-              >
-                <MaterialIcons name="logout" size={34} color="black"/> 
-              </TouchableOpacity>
-            
-            <TouchableOpacity 
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => handleClick ()}
+              style={{paddingRight:50 }}
             >
-              <Entypo name="emoji-sad" size={34} color="black" /> 
+              <MaterialIcons name="change-circle" size={50} color="black" /> 
             </TouchableOpacity>
+
+
+
+
             
           </View>
           

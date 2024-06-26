@@ -13,7 +13,6 @@ export const storeData = async (value) => {
 export const getData = async () => {
   try {
     const value = await AsyncStorage.getItem('my-key');
-    console.log('getData:value:', value);
     if (value !== null) {
       setConditionMet(true);
     }

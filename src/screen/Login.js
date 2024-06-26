@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState , useContext} from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { supabase } from '../../supabase/supabase'; 
 import { useNavigation } from '@react-navigation/native';
 import { storeData } from '../globalFunc/asyStorage';
+import { GlobalStateContext } from '../globalState/hasUser'
 
 const Login = ({ navigation }) => {
 
@@ -10,7 +11,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true); // Estado para controlar se é login ou criar conta
   const navi = useNavigation();
-
+  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
 
   // //to set the data in async storage and pass to App.js to keep login and show the FAVORITE
   // const storeData = async (value) => {
@@ -39,7 +40,8 @@ const Login = ({ navigation }) => {
 
         if (data) {
           Alert.alert('Successful login', 'User authenticated successfully!');       
-          storeData(data.id)
+          updateGlobalVariable(true);
+          //storeData(data.id)
           //colocar um loading
           // navegar para a próxima tela após o login 
           navi.navigate('Home')

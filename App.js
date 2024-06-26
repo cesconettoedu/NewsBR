@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Platform, View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -8,6 +8,8 @@ import tw from 'twrnc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo, MaterialIcons, Fontisto } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
+
+import { GlobalStateProvider, GlobalStateContext } from './src/globalState/hasUser'
 
 import Home from "./src/screen/Home";
 import Favorite from "./src/screen/Favorite";
@@ -21,23 +23,25 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   
   return (
+      <GlobalStateProvider>
     <SafeAreaView style={styles.root}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" >
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home" >
 
-          <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
-          <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
-          <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
+            <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
+            <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
+            <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
 
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+        </NavigationContainer>
     </SafeAreaView>
+      </GlobalStateProvider>
   );
 }
 
 function HomeTabs() {
 
-  const [conditionMet, setConditionMet] = useState(false);
+  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
 
@@ -126,7 +130,7 @@ function HomeTabs() {
                 {...props}
                 onPress={() => {
                   getData ();
-                  if (conditionMet) {
+                  if (userLoged) {
                     props.onPress(); // runs the navigation if condition is met
                   } else {
                     // if condition is NOT met
