@@ -31,7 +31,7 @@ const Login = ({ navigation }) => {
       // LOGIN   ////////////////////////////////////////////////
       try {
         const { data, error } = await supabase
-          .from('User')
+          .from('Users')
           .select('*')
           .eq('email', email)
           .eq('passw', password)
@@ -60,7 +60,7 @@ const Login = ({ navigation }) => {
       try {
        
         const { data, error } = await supabase
-          .from('User')
+          .from('Users')
           .insert([
             { email: `${email}` , passw: `${password}` },
           ])
