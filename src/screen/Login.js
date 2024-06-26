@@ -91,7 +91,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{isLogin ? 'Login' : 'Criar Conta'}</Text>
+      <Text style={styles.title}>{isLogin ? 'Login' : 'Register'}</Text>
       
       <TextInput
         style={styles.input}
@@ -111,12 +111,12 @@ const Login = ({ navigation }) => {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleAuthAction}>
-        <Text style={styles.buttonText}>{isLogin ? 'Entrar' : 'Criar Conta'}</Text>
+        <Text style={styles.buttonText}>{isLogin ? 'Sign In' : 'Create Account'}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={toggleAuthMode}>
         <Text style={styles.toggleText}>
-          {isLogin ? 'Criar uma nova conta' : 'Já tenho uma conta. Fazer login'}
+          {isLogin ? 'Create a new account' : 'I already have an account. Login'}
         </Text>
       </TouchableOpacity>
     </View>
