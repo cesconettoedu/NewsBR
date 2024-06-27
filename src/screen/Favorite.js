@@ -1,50 +1,108 @@
 
-import React, { useState } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState, useContext, useCallback } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import S from '../globalStyles/S'
 import tw from 'twrnc';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import GradientBtn from '../components/gradientBtn';
+import { supabase } from "../../supabase/supabase";
+
+import EventSmallCard from '../components/eventSmallCard';
+
+import { GlobalStateContext } from '../globalState/hasUser'
+
+import Spinner from '../../assets/gif/Spinner.gif';
+
+
 
 export default function Favorite(props) {
 
-  const navigation = useNavigation();
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  return (
-    <View>
-      <Text>Favorite</Text>
-    </View>
+
+  const { userId } = useContext(GlobalStateContext);
+  const navigation = useNavigation();
+  const [favEvents, setFavEvents] = useState()
+  const [load, setLoad] = useState(true);
+
+
+  async function fetchFavoriteNews() {
+    const { data: Favorites, error } = await supabase
+      .from('Favorites')
+      .select('news_ID')
+      .eq('users_ID', userId);
+
+      if (error) {
+        console.error('Erro ao buscar notícias favoritas:', error.message);
+        return [];
+      }
+  
+      // Extrair os IDs das notícias favoritas
+    const newsIds = Favorites.map(item => item.news_ID);
+    
+      // Buscar os detalhes das notícias com base nos IDs encontrados
+    const { data: BrNewsLd, error: newsError } = await supabase
+      .from('BrNewsLd')
+      .select('*')
+      .in('id', [newsIds])
+      .order('date')
+      ;
+      if (newsError) {
+        console.error('Erro ao buscar detalhes das notícias:', newsError.message);
+        return [];
+      }
+  
+      setFavEvents(BrNewsLd);
+      return BrNewsLd;
+  }
+                   
+  const fetchFav = () => {
+    fetchFavoriteNews();
+    if(favEvents != undefined) {
+        setTimeout(() => {
+          setLoad(false)
+        }, 1000);  
+      } else {
+        setTimeout(() => {
+          setLoad(false)
+        }, 2500);
+      };
+  };
+                                  
+  useEffect(() => {
+   fetchFav();
+  }, []);
+  
+  useFocusEffect( 
+    useCallback(() => {   
+    fetchFav();
+  }, [])
   )
 
-//   return (
-//     <View>
-//       <TouchableOpacity
-//         style={StyleSheet.compose({ backgroundColor: "rgba(255,255,255,0.3)" },tw`mx-4 p-2 mb-1 flex-row mt-2 rounded-2xl`)}
-//         onPress={() => {setSelectedEvent(props.info.id); navigation.navigate("Event", { ...props.info });}}
-//         key={props.info.id}
-//       >
-//         <Image src={props.info.image} style={S.icons} />
-//         <View style={tw`flex-1 flex justify-center pl-3`}>
-//           <Text style={tw`font-semibold pb-3`}>{props.info.title}</Text>
-//           <Text style={tw`font-semibold`}>{props.info.date}</Text>
-//         </View>
-//         <View style={tw`flex justify-between items-center mr-3`}>
-//           <TouchableOpacity
-//             style={StyleSheet.compose(
-//               { backgroundColor: "rgba(255,255,255,0.3)" },
-//               tw`p-2 rounded-full `
-//             )}
-//           >
-//             {/* mudar quando receber a props do Event.js 
-//                             <FontAwesome name="heart" size={20} color={favourite ? 'red' : 'gray'} />
-                            
-//                             */}
-//           </TouchableOpacity>
-//           <GradientBtn buttonClass="py-2 px-5" />
-//         </View>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// 
+  return (
+    <View style={tw`mt-6 mb-15`}>
+      <Text style={tw`ml-4 text-lg font-bold`}>FAv Event</Text>
+      <View style={tw`pl-1` }>
+        {load &&
+          <Image
+            source={Spinner}
+            alt="loading"
+            style={{ width: 40, height: 40, position: 'absolute', zIndex: 9, alignSelf: 'center', backgroundColor: 'white', borderRadius: 50, marginTop: 30, padding: 20 }}
+          /> 
+        }
+        {!load &&  
+          <ScrollView 
+            showsVerticalScrollIndicator={false}
+          >
+            {
+              favEvents.map((even, id) =>{      
+                return (
+                  <EventSmallCard key={id} info={even}/>
+                )
+              })
+            }
+          </ScrollView>
+        }
+      </View> 
+    </View>
+  )
 }

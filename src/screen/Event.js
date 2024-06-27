@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { View, Text, Image, TouchableOpacity, SafeAreaView, StyleSheet, Platform, Alert } from 'react-native'
  import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+import { supabase } from '../../supabase/supabase'; 
 
 import { GlobalStateContext } from '../globalState/hasUser'
 
@@ -12,16 +13,43 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Event = (props) => {
 
+  console.log(props.route.params.id);
+
   const navigation = useNavigation();
-  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
-  const [favourite, setFavourite] = useState(false);
+  const { userLoged, userId, updateGlobalVariable } = useContext(GlobalStateContext);
+  const [favorite, setFavorite] = useState(false);
 
   const handleFav = () => {
     if(userLoged) {
-      setFavourite(!favourite)
+      setFavorite(!favorite);
+      console.log(favorite, userId, props.route.params.id);
+      
+      // aqui ela insere na tabela
+      insertFavEvents()
+      
+      if(favorite) {
+      //aqui ela NAO insere, mas eu tenho que conferir se favorito ta com true ou false  
+      insertFavEvents()
+      
+    
+    } else {
+        console.log('remover fav');
+        
+      }
     } else {
       Alert.alert('Please login');
     }
+  }
+
+ // nao insere na tabela
+
+  const insertFavEvents = async () => {
+    const { data, error } = await supabase
+          .from('Favorites')
+          .insert([
+            { news_ID: `${props.route.params.id}` , users_ID: `${userId}`},
+          ])
+          .select()
   }
 
 
@@ -50,7 +78,7 @@ const Event = (props) => {
             onPress={() => handleFav()}
             style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 50, padding: 5 }}
             >
-            <Ionicons name="heart-circle-outline" size={50} color={favourite ? 'red' : 'gray'}  />
+            <Ionicons name="heart-circle-outline" size={50} color={favorite ? 'red' : 'gray'}  />
           </TouchableOpacity>
         </View>
         <Text style={styles.description}>{props.route.params.info}</Text>

@@ -102,7 +102,7 @@ function HomeTabs() {
           tabBarIcon: ({focused}) => {
             return(
             <LinearGradient
-              colors={['rgba(9,181,211,0.9)', 'rgba(55,131,244,0.9)']}
+              colors={['rgba(9,181,211,1)', 'rgba(55,131,244,1)']}
               end={{x:1, y:1}}
               start={{x:0.1, y:0.2}}
               style={StyleSheet.compose(styles.btnHome, tw`rounded-3xl `)}
