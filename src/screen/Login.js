@@ -42,9 +42,6 @@ const Login = ({ navigation }) => {
           Alert.alert('Successful login', 'User authenticated successfully!');       
           updateGlobalVariable(true);
           updateGlobalUserID(data.id)
-          //storeData(data.id)
-          //colocar um loading
-          // navegar para a próxima tela após o login 
           navi.navigate('Home')
           
         } else {
