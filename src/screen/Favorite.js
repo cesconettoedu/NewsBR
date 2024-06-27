@@ -70,12 +70,12 @@ export default function Favorite(props) {
                                   
   useEffect(() => {
    fetchFav();
-  }, []);
+  }, [userId]);
   
   useFocusEffect( 
     useCallback(() => {   
     fetchFav();
-  }, [])
+  }, [userId])
   )
 
   return (

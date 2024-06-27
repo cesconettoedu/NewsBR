@@ -30,12 +30,10 @@ const Event = (props) => {
       if(favorite) {
       //aqui ela NAO insere, mas eu tenho que conferir se favorito ta com true ou false  
       insertFavEvents()
-      
-    
-    } else {
-        console.log('remover fav');
-        
+      } else {
+        console.log('remover fav');      
       }
+    
     } else {
       Alert.alert('Please login');
     }
@@ -45,11 +43,11 @@ const Event = (props) => {
 
   const insertFavEvents = async () => {
     const { data, error } = await supabase
-          .from('Favorites')
-          .insert([
-            { news_ID: `${props.route.params.id}` , users_ID: `${userId}`},
-          ])
-          .select()
+      .from('Favorites')
+      .insert([
+          { news_ID: `${props.route.params.id}` , users_ID: `${userId}`},
+        ])
+      .select()
   }
 
 
