@@ -1,15 +1,28 @@
-import React, { useState } from 'react'
-import { View, Text, Image, TouchableOpacity, SafeAreaView, StyleSheet, Platform } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { View, Text, Image, TouchableOpacity, SafeAreaView, StyleSheet, Platform, Alert } from 'react-native'
  import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+
+import { GlobalStateContext } from '../globalState/hasUser'
+
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+
 // import { LinearGradient } from "expo-linear-gradient";
 
 const Event = (props) => {
 
   const navigation = useNavigation();
+  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
   const [favourite, setFavourite] = useState(false);
+
+  const handleFav = () => {
+    if(userLoged) {
+      setFavourite(!favourite)
+    } else {
+      Alert.alert('Please login');
+    }
+  }
 
 
   return (
@@ -34,7 +47,7 @@ const Event = (props) => {
         <View  style={tw`flex-row justify-between items-center mb-2`}>
           <Text style={styles.title}>{props.route.params.title}</Text>
           <TouchableOpacity
-            onPress={() => {setFavourite(!favourite)}}
+            onPress={() => handleFav()}
             style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 50, padding: 5 }}
             >
             <Ionicons name="heart-circle-outline" size={50} color={favourite ? 'red' : 'gray'}  />

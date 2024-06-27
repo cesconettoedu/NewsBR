@@ -11,7 +11,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true); // Estado para controlar se é login ou criar conta
   const navi = useNavigation();
-  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
+  const { userLoged, updateGlobalVariable, updateGlobalUserID } = useContext(GlobalStateContext);
 
   // //to set the data in async storage and pass to App.js to keep login and show the FAVORITE
   // const storeData = async (value) => {
@@ -41,6 +41,7 @@ const Login = ({ navigation }) => {
         if (data) {
           Alert.alert('Successful login', 'User authenticated successfully!');       
           updateGlobalVariable(true);
+          updateGlobalUserID(data.id)
           //storeData(data.id)
           //colocar um loading
           // navegar para a próxima tela após o login 
