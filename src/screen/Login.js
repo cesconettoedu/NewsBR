@@ -13,22 +13,10 @@ const Login = ({ navigation }) => {
   const navi = useNavigation();
   const { userLoged, updateGlobalVariable, updateGlobalUserID } = useContext(GlobalStateContext);
 
-  // //to set the data in async storage and pass to App.js to keep login and show the FAVORITE
-  // const storeData = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem('my-key', `${value}`);
-  //   } catch (e) {
-  //      // saving error
-  //   }
-  // };
-
-
-
+  
   const handleAuthAction = async () => {
     if (isLogin) {
-    
-    
-    
+
       // LOGIN   ////////////////////////////////////////////////
       try {
         const { data, error } = await supabase
@@ -42,6 +30,7 @@ const Login = ({ navigation }) => {
           Alert.alert('Successful login', 'User authenticated successfully!');       
           updateGlobalVariable(true);
           updateGlobalUserID(data.id)
+          storeData(true, data.id);
           navi.navigate('Home')
           
         } else {

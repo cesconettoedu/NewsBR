@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { clearAll, getData } from '../globalFunc/asyStorage';
+import { clearAll, getData, printAllData } from '../globalFunc/asyStorage';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -106,6 +106,7 @@ const Home = () => {
 
   useEffect(() => {
     loadData();
+    printAllData(); //para ver tudo salvo no Asyncstorage
   }, [conditionMet]);
 
 
@@ -115,6 +116,7 @@ const Home = () => {
     useCallback(() => {
       console.log('fez reload');
       getData();
+      printAllData(); //para ver tudo salvo no Asyncstorage
     }, [])
   );
 
@@ -153,7 +155,7 @@ const Home = () => {
             {userLoged ? (
                 <TouchableOpacity 
                   //onPress={() => {clearAll(); setConditionMet(false) }}
-                  onPress={() => {updateGlobalVariable(false); }}
+                  onPress={() => {updateGlobalVariable(false); clearAll();}}
                   
                 >
                   <MaterialIcons name="logout" size={34} color="black"/> 

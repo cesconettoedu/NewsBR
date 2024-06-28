@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
   //to set the data in async storage and pass to App.js to keep login and show the FAVORITE
-export const storeData = async (value) => {
+export const storeData = async (yesno, userid) => {
+  const firstPair = ["@userloged", `${yesno}`]
+  const secondPair = ["@userlogedId", `${userid}`]
   try {
-    await AsyncStorage.setItem('my-key', `${value}`);
+    await AsyncStorage.multiSet([firstPair, secondPair])
   } catch (e) {
      // saving error
   }
@@ -46,3 +48,16 @@ export const clearAll = async () => {
 //   // example console.log result:
 //   // ['@MyApp_user', '@MyApp_key']
 // }
+
+export const printAllData = async () => {
+      try {
+        const allKeys = await AsyncStorage.getAllKeys();
+        const data = await AsyncStorage.multiGet(allKeys);
+        console.log('Dados salvos no AsyncStorage:');
+        data.forEach(item => {
+          console.log(`${item[0]}: ${item[1]}`);
+        });
+      } catch (error) {
+        console.error('Erro ao imprimir dados do AsyncStorage:', error);
+      }
+    };
