@@ -30,8 +30,8 @@ const Login = ({ navigation }) => {
           Alert.alert('Successful login', 'User authenticated successfully!');       
           updateGlobalVariable(true);
           updateGlobalUserID(data.id);
-          updateGlobalUserEmail(data.email);
-          storeData(true, data.id, data.email);
+          updateGlobalUserEmail(data.email.substring(0, data.email.indexOf('@')));
+          storeData(true, data.id, data.email.substring(0, data.email.indexOf('@')));
           navi.navigate('Home')
           
         } else {
@@ -109,6 +109,11 @@ const Login = ({ navigation }) => {
           {isLogin ? 'Create a new account' : 'I already have an account. Login'}
         </Text>
       </TouchableOpacity>
+      <View style={{bottom:'-15%'}}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.toggleText}>Return</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

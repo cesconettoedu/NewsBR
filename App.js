@@ -67,7 +67,7 @@ function HomeTabs() {
          // console.log('userloged-----------------:', value);
           updateGlobalVariable(value);
         } else if (key === '@userlogedEmail'){
-          updateGlobalUserEmail(value.substring(0, value.indexOf('@')));  // pegar somente o que esta antes do @
+          updateGlobalUserEmail(value);  // pegar somente o que esta antes do @
         } else if (key === '@userlogedId' && value !== null) {
           updateGlobalUserID(value);
         } else {
