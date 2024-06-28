@@ -60,11 +60,21 @@ const Login = ({ navigation }) => {
           Alert.alert('Erro ao criar conta', error.message);
         } else {
           Alert.alert('Conta criada', 'Usuário registrado com sucesso!');
+           const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('email', email)
+            .eq('passw', password)
+            .single();
+          updateGlobalVariable(true);
+          updateGlobalUserID(data.id);
+          updateGlobalUserEmail(data.email.substring(0, data.email.indexOf('@')));
+          storeData(true, data.id, data.email.substring(0, data.email.indexOf('@')));
+
           setEmail('');
           setPassword('')
-          // Aqui você pode navegar para a próxima tela após a criação de conta bem-sucedida
-          // Exemplo de navegação:
-          // navigation.navigate('Home');
+          
+          navi.navigate('Home');
         }
       } catch (error) {
         console.error('Erro ao tentar criar conta:', error.message);
