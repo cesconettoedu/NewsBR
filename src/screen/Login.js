@@ -11,7 +11,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true); // Estado para controlar se é login ou criar conta
   const navi = useNavigation();
-  const { userLoged, updateGlobalVariable, updateGlobalUserID } = useContext(GlobalStateContext);
+  const { userLoged, updateGlobalVariable, updateGlobalUserID, updateGlobalUserEmail} = useContext(GlobalStateContext);
 
   
   const handleAuthAction = async () => {
@@ -29,8 +29,9 @@ const Login = ({ navigation }) => {
         if (data) {
           Alert.alert('Successful login', 'User authenticated successfully!');       
           updateGlobalVariable(true);
-          updateGlobalUserID(data.id)
-          storeData(true, data.id);
+          updateGlobalUserID(data.id);
+          updateGlobalUserEmail(data.email);
+          storeData(true, data.id, data.email);
           navi.navigate('Home')
           
         } else {

@@ -5,8 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { clearAll, getData, printAllData } from '../globalFunc/asyStorage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { clearAll, printAllData } from '../globalFunc/asyStorage';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
@@ -21,7 +20,7 @@ import Spinner from '../../assets/gif/Spinner.gif';
 
 
 const Home = () => {
-  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
+  const { userLoged, userEmail, updateGlobalVariable } = useContext(GlobalStateContext);
   
   const navigation = useNavigation();
   
@@ -150,11 +149,15 @@ const Home = () => {
 
           <View style={tw`flex-row-reverse mt-4 mx-6`} >
             {userLoged ? (
+              <View style={tw`flex-row items-center`}>
+                <Text style={{marginRight: 30, }}>{userEmail}</Text>
                 <TouchableOpacity 
                   onPress={() => {updateGlobalVariable(false); clearAll();}}                 
                 >
-                  <MaterialIcons name="logout" size={34} color="black"/> 
+                  <MaterialIcons name="logout" size={34} color="black"/>
+                  <Text style={{fontSize: 10, color: "#16247d"}} >Logout</Text> 
                 </TouchableOpacity>
+              </View>
              ) : (
                 <TouchableOpacity 
                 onPress={() => navigation.navigate('Login')}

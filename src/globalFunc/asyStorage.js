@@ -2,11 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 //to store multi data in async storage 
-export const storeData = async (yesno, userid) => {
+export const storeData = async (yesno, userid, email) => {
   const firstPair = ["@userloged", `${yesno}`]
   const secondPair = ["@userlogedId", `${userid}`]
+  const thirdPair = ["@userlogedEmail", `${email}`]
   try {
-    await AsyncStorage.multiSet([firstPair, secondPair])
+    await AsyncStorage.multiSet([firstPair, secondPair, thirdPair])
   } catch (e) {
      // saving error
   }

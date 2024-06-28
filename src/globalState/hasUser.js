@@ -9,6 +9,7 @@ const GlobalStateProvider = ({ children }) => {
 
   const [userLoged, setUserLoged] = useState(false);
   const [userId, setUserId] = useState();
+  const [userEmail, setUserEmail] = useState('');
   const [favourite, setFavourite] = useState(false);
 
   console.log("CONTEXT USERID: ",userId);
@@ -21,6 +22,10 @@ const GlobalStateProvider = ({ children }) => {
     setUserId(newValue);
   };
 
+   const updateGlobalUserEmail = (newValue) => {
+    setUserEmail(newValue);
+  };
+
   const updateGlobalFavorite = (newValue) => {
     setFavourite(newValue);
   };
@@ -29,7 +34,7 @@ const GlobalStateProvider = ({ children }) => {
   console.log(userLoged);
   return (
     <GlobalStateContext.Provider
-      value={{ userLoged, updateGlobalVariable, userId, updateGlobalUserID, favourite, updateGlobalFavorite}}
+      value={{ userLoged, updateGlobalVariable, userId, updateGlobalUserID, favourite, updateGlobalFavorite, userEmail, updateGlobalUserEmail}}
     >
       {children}
     </GlobalStateContext.Provider>

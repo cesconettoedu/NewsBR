@@ -41,7 +41,7 @@ export default function App() {
 
 function HomeTabs() {
 
-  const { userLoged, updateGlobalVariable, updateGlobalUserID } = useContext(GlobalStateContext);
+  const { userLoged, updateGlobalVariable, updateGlobalUserID, updateGlobalUserEmail } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
 
@@ -58,7 +58,7 @@ function HomeTabs() {
   // };
   const getStoreDatas = async () => {
     try {
-      const pairs = await AsyncStorage.multiGet(['@userloged', '@userlogedId']);
+      const pairs = await AsyncStorage.multiGet(['@userloged', '@userlogedId', '@userlogedEmail']);
       pairs.forEach(pair => {
         const key = pair[0];
         const value = pair[1];
@@ -66,6 +66,8 @@ function HomeTabs() {
         if (key === '@userloged') {
          // console.log('userloged-----------------:', value);
           updateGlobalVariable(value);
+        } else if (key === '@userlogedEmail'){
+          updateGlobalUserEmail(value);  
         } else if (key === '@userlogedId' && value !== null) {
           updateGlobalUserID(value);
         } else {
