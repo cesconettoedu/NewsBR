@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  //to set the data in async storage and pass to App.js to keep login and show the FAVORITE
+
+//to store data in async storage 
 export const storeData = async (yesno, userid) => {
   const firstPair = ["@userloged", `${yesno}`]
   const secondPair = ["@userlogedId", `${userid}`]
