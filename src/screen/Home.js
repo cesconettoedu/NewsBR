@@ -149,8 +149,8 @@ const Home = () => {
 
           <View style={tw`flex-row-reverse mt-4 mx-6`} >
             {userLoged ? (
-              <View style={tw`flex-row items-center`}>
-                <Text style={{marginRight: 30, }}>{userEmail}</Text>
+              <View style={tw`flex-row `}>
+                <Text style={{marginRight: 15, fontSize: 40 }}>{userEmail}</Text>
                 <TouchableOpacity 
                   onPress={() => {updateGlobalVariable(false); clearAll();}}                 
                 >
