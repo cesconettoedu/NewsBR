@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-//to store data in async storage 
+//to store multi data in async storage 
 export const storeData = async (yesno, userid) => {
   const firstPair = ["@userloged", `${yesno}`]
   const secondPair = ["@userlogedId", `${userid}`]
@@ -11,6 +11,8 @@ export const storeData = async (yesno, userid) => {
      // saving error
   }
 };
+
+
 
 
 export const getData = async () => {

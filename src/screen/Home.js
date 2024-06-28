@@ -6,7 +6,7 @@ import tw from 'twrnc';
 import { supabase } from "../../supabase/supabase";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { clearAll, getData, printAllData } from '../globalFunc/asyStorage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
@@ -21,19 +21,18 @@ import Spinner from '../../assets/gif/Spinner.gif';
 
 
 const Home = () => {
+  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
+  
   const navigation = useNavigation();
+  
   const [refreshing, setRefreshing] = React.useState(false);
   const [load, setLoad] = useState(true);
   const [activeStore, setActiveStore] = useState('Action');
   const [upCommingEvents, setUpCommingEvents] = useState();
   const [todayEvents, setTodayEvents] = useState();
-  const [conditionMet, setConditionMet] = useState(false);
+  const [userLogedStorage, setUserLogedStorage] = useState();
+  const [userLogedStorageId, setUserLogedStorageId] = useState();
 
-  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
-
-  const handleClick = () => {
-    updateGlobalVariable(!userLoged);
-  };
 
   // const getAllEvents = async () => {
   //   let { data: NewsBR, error } = await supabase
@@ -63,7 +62,6 @@ const Home = () => {
       return BrNewsLd
   }
 
-
   // serve para na hora que arrasta o dedo para baixo, fazer um refresh na pagina
   const onRefresh = () => {
     setRefreshing(true);
@@ -91,7 +89,7 @@ const Home = () => {
       getUpCommingEvents();
       if(upCommingEvents != undefined && todayEvents != undefined) {
         setTimeout(() => {
-          setLoad(false)
+          setLoad(false);
         }, 1000);  
       } else {
         setTimeout(() => {
@@ -107,15 +105,14 @@ const Home = () => {
   useEffect(() => {
     loadData();
     printAllData(); //para ver tudo salvo no Asyncstorage
-  }, [conditionMet]);
+  }, []);
 
 
   // useFocusEffect para recarregar os dados toda vez que a tela estiver em foco
-  // talvez usar para ver se ta logado
   useFocusEffect(
     useCallback(() => {
       console.log('fez reload');
-      getData();
+      loadData();
       printAllData(); //para ver tudo salvo no Asyncstorage
     }, [])
   );
@@ -154,9 +151,7 @@ const Home = () => {
           <View style={tw`flex-row-reverse mt-4 mx-6`} >
             {userLoged ? (
                 <TouchableOpacity 
-                  //onPress={() => {clearAll(); setConditionMet(false) }}
-                  onPress={() => {updateGlobalVariable(false); clearAll();}}
-                  
+                  onPress={() => {updateGlobalVariable(false); clearAll();}}                 
                 >
                   <MaterialIcons name="logout" size={34} color="black"/> 
                 </TouchableOpacity>
@@ -167,21 +162,7 @@ const Home = () => {
                   <Entypo name="emoji-sad" size={34} color="black" /> 
                 </TouchableOpacity>
              )
-}
-
-
-            {/* // TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
-            <TouchableOpacity 
-              onPress={() => handleClick ()}
-              style={{paddingRight:50 }}
-            >
-              <MaterialIcons name="change-circle" size={50} color="black" /> 
-            </TouchableOpacity>
-
-
-
-
-            
+            }           
           </View>
           
           {/*   STORES */}

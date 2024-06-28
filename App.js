@@ -24,46 +24,66 @@ export default function App() {
   
   return (
       <GlobalStateProvider>
-    <SafeAreaView style={styles.root}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home" >
+        <SafeAreaView style={styles.root}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home" >
 
-            <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
-            <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
-            <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
+              <Stack.Screen name="Home" options={{headerShown: false}} component={HomeTabs} />
+              <Stack.Screen name="Event" options={{headerShown: false}} component={Event} />
+              <Stack.Screen name="Login" options={{headerShown: false}} component={Login} />
 
-          </Stack.Navigator>
-        </NavigationContainer>
-    </SafeAreaView>
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
       </GlobalStateProvider>
   );
 }
 
 function HomeTabs() {
 
-  const { userLoged, updateGlobalVariable } = useContext(GlobalStateContext);
+  const { userLoged, updateGlobalVariable, updateGlobalUserID } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
 
-  //to get the async storage login data in Login.js and keep loged
-  const getData = async () => {
+  // //to get the async storage login data in Login.js and keep loged
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('my-key');
+  //     if (value !== null) {
+  //       setConditionMet(true)
+  //     }
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // };
+  const getStoreDatas = async () => {
     try {
-      const value = await AsyncStorage.getItem('my-key');
-      if (value !== null) {
-        setConditionMet(true)
-      }
+      const pairs = await AsyncStorage.multiGet(['@userloged', '@userlogedId']);
+      pairs.forEach(pair => {
+        const key = pair[0];
+        const value = pair[1];
+
+        if (key === '@userloged') {
+         // console.log('userloged-----------------:', value);
+          updateGlobalVariable(value);
+        } else if (key === '@userlogedId' && value !== null) {
+          updateGlobalUserID(value);
+        } else {
+          updateGlobalUserID(0);
+        }
+      });
+
+    // console.log('userloged-----------------:', userLogedStorage);
+    // console.log('userlogedId---------------:', userLogedStorageId);
+
     } catch (e) {
-      // error reading value
+      console.error('Erro ao ler AsyncStorage:', e);
     }
-  };
+  }
 
 
   useEffect(() => {
-    getData();
-    // Simulação de uma condição assíncrona (por exemplo, verificação de login)
-    // setTimeout(() => {
-    //   setConditionMet(false); // Condição definida como verdadeira após um tempo simulado
-    // }, 2000); // Tempo simulado de 2 segundos
+    getStoreDatas();
   }, []);
 
   return(
@@ -129,7 +149,6 @@ function HomeTabs() {
               <TouchableOpacity
                 {...props}
                 onPress={() => {
-                  getData ();
                   if (userLoged) {
                     props.onPress(); // runs the navigation if condition is met
                   } else {
