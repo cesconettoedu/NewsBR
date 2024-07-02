@@ -38,8 +38,7 @@ export default function Favorite(props) {
   
       // Extrair os IDs das notícias favoritas
     const newsIds = Favorites.map(item => item.all_id);
-    console.log(newsIds);
-    
+        
       // Buscar os detalhes das notícias com base nos IDs encontrados
     const { data: BrNewsLd, error: newsError } = await supabase
       .from('all_events')

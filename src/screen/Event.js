@@ -107,10 +107,10 @@ const Event = (props) => {
         <Text style={styles.description}>{props.route.params.info}</Text>
       </View>
       <View style={styles.locationContainer}>
-        <Text style={styles.location}>Link: Under Work</Text>
+        <Text style={styles.location}>{props.route.params.link}</Text>
       </View>
       <View style={styles.locationContainer}>
-        <Text style={styles.location}>Location: Under Work</Text>
+        <Text style={styles.location}>{props.route.params.location}</Text>
       </View>
     </SafeAreaView>
   );

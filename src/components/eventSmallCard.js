@@ -30,10 +30,11 @@ export default function eventSmallCard(props) {
               tw`p-2 rounded-full `
             )}
           >
-            {/* mudar quando receber a props do eventCard
-              <FontAwesome name="heart" size={20} color={favourite ? 'red' : 'gray'} />
-                */}
-              <FontAwesome name="heart" size={20} color={'gray'} />
+            <FontAwesome name="heart" size={20} color={'gray'} />
+            {/* 
+              mudar quando receber a props do eventCard
+              <FontAwesome name="heart" size={20} color={favorite ? 'red' : 'gray'} />
+            */}
                             
                             
           </View>
