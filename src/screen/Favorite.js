@@ -27,9 +27,9 @@ export default function Favorite(props) {
 
   async function fetchFavoriteNews() {
     const { data: Favorites, error } = await supabase
-      .from('Favorites')
-      .select('news_ID')
-      .eq('users_ID', userId);
+      .from('favorite_events')
+      .select('all_id')
+      .eq('users_id', userId);
 
       if (error) {
         console.error('Erro ao buscar notícias favoritas:', error.message);
@@ -37,11 +37,12 @@ export default function Favorite(props) {
       }
   
       // Extrair os IDs das notícias favoritas
-    const newsIds = Favorites.map(item => item.news_ID);
+    const newsIds = Favorites.map(item => item.all_id);
+    console.log(newsIds);
     
       // Buscar os detalhes das notícias com base nos IDs encontrados
     const { data: BrNewsLd, error: newsError } = await supabase
-      .from('BrNewsLd')
+      .from('all_events')
       .select('*')
       .in('id', [newsIds])
       .order('date')

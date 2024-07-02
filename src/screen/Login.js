@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
       // LOGIN   ////////////////////////////////////////////////
       try {
         const { data, error } = await supabase
-          .from('Users')
+          .from('users_events')
           .select('*')
           .eq('email', email)
           .eq('passw', password)
@@ -50,7 +50,7 @@ const Login = ({ navigation }) => {
       try {
        
         const { data, error } = await supabase
-          .from('Users')
+          .from('users_events')
           .insert([
             { email: `${email}` , passw: `${password}` },
           ])
@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
         } else {
           Alert.alert('Conta criada', 'Usuário registrado com sucesso!');
            const { data, error } = await supabase
-            .from('Users')
+            .from('users_events')
             .select('*')
             .eq('email', email)
             .eq('passw', password)

@@ -13,41 +13,66 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Event = (props) => {
 
-  console.log(props.route.params.id);
+  //console.log(props.route.params.id);
 
   const navigation = useNavigation();
   const { userLoged, userId, updateGlobalVariable } = useContext(GlobalStateContext);
   const [favorite, setFavorite] = useState(false);
 
-  const handleFav = () => {
+  const [hasData, setHasData] = useState(false)
+
+
+  const handleFav = async () => {
+
     if(userLoged) {
-      setFavorite(!favorite);
-      console.log(favorite, userId, props.route.params.id);
-      
-      // aqui ela insere na tabela
-      insertFavEvents()
-      
-      if(favorite) {
-      //aqui ela NAO insere, mas eu tenho que conferir se favorito ta com true ou false  
-      insertFavEvents()
+    // console.log(favorite, userId, props.route.params.id);
+    // Fazer a checagem  pra ver se ja existe no BD em Favoritos , se existir apaga senao cria
+    /////////////////////////////////////////////////////////////////////////////////
+      checkExist();
+
+      if(hasData === null || hasData === undefined){
+        setFavorite(true);
+        insertFavEvents();
+        console.log('insert ');
+
       } else {
-        console.log('remover fav');      
+        setFavorite(false);
+        deletFavEvents();
+        console.log('delete ');
       }
-    
+
     } else {
       Alert.alert('Please login');
     }
   }
 
- // nao insere na tabela
+  const checkExist = async () => {
+    let { data: Favorites, error } = await supabase
+    .from('favorite_events')
+    .select('*')
+    .eq('all_id', `${props.route.params.id}`) 
+    .eq('users_id', `${userId}`) 
+    .single()
+      setHasData(Favorites)
+      return Favorites
+  }
 
   const insertFavEvents = async () => {
     const { data, error } = await supabase
-      .from('Favorites')
+      .from('favorite_events')
       .insert([
-          { news_ID: `${props.route.params.id}` , users_ID: `${userId}`},
+          { all_id: `${props.route.params.id}` , users_id: `${userId}`},
         ])
       .select()
+  }
+
+
+  const deletFavEvents = async () => {
+    const response = await supabase
+    .from('favorite_events')
+    .delete()
+    .eq('all_id', `${props.route.params.id}`) 
+    .eq('users_id', `${userId}`) 
   }
 
 

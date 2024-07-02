@@ -43,22 +43,22 @@ const Home = () => {
   // }
 
   const getUpCommingEvents = async () => {
-    let { data: BrNewsLd, error } = await supabase
-    .from('BrNewsLd')
+    let { data: All, error } = await supabase
+    .from('all_events')
     .select('*')
     .gte('date', `${today}`)
     .order('date')  
-      setUpCommingEvents(BrNewsLd)
-      return BrNewsLd
+      setUpCommingEvents(All)
+      return All
   }
 
   const getTodayEvents = async () => {
-    let { data: BrNewsLd, error } = await supabase
-    .from('BrNewsLd')
+    let { data: NewsPro, error } = await supabase
+    .from('all_events')
     .select('*')
     .eq('date', `${today}`)  
-      setTodayEvents(BrNewsLd)
-      return BrNewsLd
+      setTodayEvents(NewsPro)
+      return NewsPro
   }
 
   // serve para na hora que arrasta o dedo para baixo, fazer um refresh na pagina
@@ -103,16 +103,16 @@ const Home = () => {
 
   useEffect(() => {
     loadData();
-    printAllData(); //para ver tudo salvo no Asyncstorage
+   // printAllData(); //para ver tudo salvo no Asyncstorage
   }, []);
 
 
   // useFocusEffect para recarregar os dados toda vez que a tela estiver em foco
   useFocusEffect(
     useCallback(() => {
-      console.log('fez reload');
+     // console.log('fez reload');
       loadData();
-      printAllData(); //para ver tudo salvo no Asyncstorage
+     // printAllData(); //para ver tudo salvo no Asyncstorage
     }, [])
   );
 
@@ -246,4 +246,5 @@ const Home = () => {
 }
 
 export default Home
+
 
