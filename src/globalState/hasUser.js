@@ -32,7 +32,12 @@ const GlobalStateProvider = ({ children }) => {
  // console.log(userLoged);
   return (
     <GlobalStateContext.Provider
-      value={{ userLoged, updateGlobalVariable, userId, updateGlobalUserID, favourite, updateGlobalFavorite, userEmail, updateGlobalUserEmail}}
+      value={{ 
+        userLoged, updateGlobalVariable, 
+        userId, updateGlobalUserID, 
+        favourite, updateGlobalFavorite, 
+        userEmail, updateGlobalUserEmail
+      }}
     >
       {children}
     </GlobalStateContext.Provider>

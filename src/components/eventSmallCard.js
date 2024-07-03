@@ -1,15 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import S from '../globalStyles/S'
 import tw from 'twrnc';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import GradientBtn from '../components/gradientBtn';
 import { FontAwesome } from '@expo/vector-icons';
+import { GlobalStateContext } from '../globalState/hasUser'
+import { supabase } from "../../supabase/supabase";
+
 
 export default function eventSmallCard(props) {
 
   const navigation = useNavigation();
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [heart, setHeart] = useState(null);
+
+  const { userId } = useContext(GlobalStateContext);
+
+
+    const checkFav = async () => {
+      let { data: Favorites, error } = await supabase
+      .from('favorite_events')
+      .select('*')
+      .eq('all_id', `${props.info.id}`) 
+      .eq('users_id', `${userId}`) 
+      .single()
+        setHeart(Favorites)
+        return Favorites
+    }
+
+   useFocusEffect(
+    useCallback(() => {
+       checkFav();
+    }, [])
+  );
+
 
   return (
     <View>
@@ -30,7 +55,11 @@ export default function eventSmallCard(props) {
               tw`p-2 rounded-full `
             )}
           >
-            <FontAwesome name="heart" size={20} color={'gray'} />
+            {heart &&
+              <FontAwesome name="heart" size={20} color={'red'} />
+            }{!heart &&
+              <FontAwesome name="heart" size={20} color={'gray'} />
+            }
             {/* 
               mudar quando receber a props do eventCard
               <FontAwesome name="heart" size={20} color={favorite ? 'red' : 'gray'} />
