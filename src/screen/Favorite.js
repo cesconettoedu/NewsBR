@@ -79,8 +79,8 @@ export default function Favorite(props) {
   )
 
   return (
-    <View style={tw`mt-6 mb-15`}>
-      <Text style={tw`ml-4 text-lg font-bold`}>FAv Event</Text>
+    <View style={tw`mt-3 mb-15`}>
+      <Text style={tw`text-lg font-bold text-center`}>Favorites</Text>
       <View style={tw`pl-1` }>
         {load &&
           <Image

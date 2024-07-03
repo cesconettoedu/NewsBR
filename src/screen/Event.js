@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback } from 'react'
-import { View, Text, Image, TouchableOpacity, SafeAreaView, StyleSheet, Platform, Alert } from 'react-native'
+import { View, Text, Image, Pressable, SafeAreaView, StyleSheet, Platform, Alert } from 'react-native'
  import tw from 'twrnc';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../../supabase/supabase'; 
@@ -31,12 +31,12 @@ const Event = (props) => {
       checkExist();
 
       if(hasData === null || hasData === undefined){
-        setFavorite(true);
+        setFavorite(!favorite);
         insertFavEvents();
         console.log('insert ');
 
       } else {
-        setFavorite(false);
+        setFavorite(!favorite);
         deletFavEvents();
         console.log('delete ');
       }
@@ -76,7 +76,7 @@ const Event = (props) => {
   }
 
 
-    useFocusEffect(
+  useFocusEffect(
     useCallback(() => {
       if(userLoged) {
         checkExist();
@@ -87,12 +87,12 @@ const Event = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={tw``}>
-        <TouchableOpacity
+        <Pressable
           onPress={() => navigation.goBack()}
           style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 50, padding: 5 }}
         >
           <Feather name="arrow-left-circle" size={40} color="gray" />
-        </TouchableOpacity>
+        </Pressable>
 
       </View>
       <View style={styles.imageContainer}>
@@ -105,7 +105,7 @@ const Event = (props) => {
       <View style={styles.infoContainer}>    
         <View  style={tw`flex-row justify-between items-center mb-2`}>
           <Text style={styles.title}>{props.route.params.title}</Text>
-          <TouchableOpacity
+          <Pressable
             onPress={() => handleFav()}
             style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 50, padding: 5 }}
             >
@@ -119,7 +119,7 @@ const Event = (props) => {
             }
 
 
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <Text style={styles.description}>{props.route.params.info}</Text>
       </View>
