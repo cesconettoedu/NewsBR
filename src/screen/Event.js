@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import { View, Text, Image, TouchableOpacity, SafeAreaView, StyleSheet, Platform, Alert } from 'react-native'
  import tw from 'twrnc';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../../supabase/supabase'; 
 
 import { GlobalStateContext } from '../globalState/hasUser'
@@ -76,6 +76,14 @@ const Event = (props) => {
   }
 
 
+    useFocusEffect(
+    useCallback(() => {
+      if(userLoged) {
+        checkExist();
+      }
+    }, [])
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={tw``}>
@@ -101,7 +109,16 @@ const Event = (props) => {
             onPress={() => handleFav()}
             style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 50, padding: 5 }}
             >
-            <Ionicons name="heart-circle-outline" size={50} color={favorite ? 'red' : 'gray'}  />
+            {/* <Ionicons name="heart-circle-outline" size={50} color={favorite ? 'red' : 'gray'}  /> */}
+
+            {hasData &&
+              <Ionicons name="heart-circle-outline" size={50} color='red'/>
+            }
+            {!hasData &&
+              <Ionicons name="heart-circle-outline" size={50} color='gray'/>
+            }
+
+
           </TouchableOpacity>
         </View>
         <Text style={styles.description}>{props.route.params.info}</Text>
