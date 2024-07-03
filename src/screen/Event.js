@@ -9,11 +9,11 @@ import { GlobalStateContext } from '../globalState/hasUser'
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-// import { LinearGradient } from "expo-linear-gradient";
+// This is when you click in a event and open the information
 
 const Event = (props) => {
 
-  //console.log(props.route.params.id);
+  //console.log(props.route.params.title);
 
   const navigation = useNavigation();
   const { userLoged, userId, updateGlobalVariable } = useContext(GlobalStateContext);
@@ -61,7 +61,7 @@ const Event = (props) => {
     const { data, error } = await supabase
       .from('favorite_events')
       .insert([
-          { all_id: `${props.route.params.id}` , users_id: `${userId}`},
+          { all_id: `${props.route.params.id}` , users_id: `${userId}`, event_title: `${props.route.params.title}`},
         ])
       .select()
   }

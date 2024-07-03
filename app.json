@@ -15,10 +15,12 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cesconettoedu.newsBR"
     },
     "web": {
       "favicon": "./assets/favicon.png"

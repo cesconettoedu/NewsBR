@@ -6,6 +6,9 @@ import S from '../globalStyles/S';
 import { useNavigation } from '@react-navigation/native';
 
 
+
+// This is the Big Card in Todays EVENT
+
 export default function eventCard(props) {
 
   const navigation = useNavigation();
